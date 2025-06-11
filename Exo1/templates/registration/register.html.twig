@@ -3,16 +3,52 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6 " style="border: 1px solid #fff; border-radius: 0.5rem;">
+                <div class="card shadow border-0" >
+                    <div class="card-header bg-dark text-light text-center">
+                        <h1 class="h4 mb-0">Créer un compte</h1>
+                    </div>
+                    <div class="card-body p-4 text-light" style="background-color: #1c191f;">
+                        {{ form_errors(registrationForm) }}
 
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                        {{ form_start(registrationForm) }}
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.name, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                                {{ form_widget(registrationForm.name, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.name) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.firstname, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                                {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.firstname) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.email) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(registrationForm.plainPassword) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(registrationForm.roles, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                                {{ form_widget(registrationForm.roles, {'attr': {'class': 'form-check-label'}}) }}
+                                {{ form_errors(registrationForm.roles) }}
+                            </div>
+                            <div class="mb-3 form-check">
+                                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                                {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                {{ form_errors(registrationForm.agreeTerms) }}
+                            </div>
+                            <button type="submit" class="btn btn-dark w-100 py-2 mt-2 text-light">Créer mon compte</button>
+                        {{ form_end(registrationForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

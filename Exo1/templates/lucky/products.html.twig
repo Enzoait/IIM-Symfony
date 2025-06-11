@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-dark text-light text-center">
+                        <h1 class="h4 mb-0">
+                            Hello {{ connectedUser ? connectedUser : 'Guest' }}
+                        </h1>
+                        {% if isAdmin %}
+                            <div class="alert alert-success mt-3 mb-0 py-2" role="alert">
+                                Connected as an Administrator.
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-4 bg-light">
+                        <div class="mb-4 text-center">
+                            <strong class="fs-5">Liste des produits</strong>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% for product in productList %}
+                                <li class="list-group-item d-flex flex-column align-items-start">
+                                    <span class="fw-semibold">{{ product.name }}</span>
+                                    <span class="text-muted small">{{ product.description }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item text-center text-muted">Aucun produit disponible.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
