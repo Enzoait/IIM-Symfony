@@ -6,7 +6,7 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-7">
-                <div class="card shadow border-0">
+                <div class="card shadow border-0 bg-light">
                     <div class="card-header bg-dark text-light text-center">
                         <h1 class="h4 mb-0">
                             Hello {{ connectedUser ? connectedUser : 'Guest' }}
@@ -17,7 +17,7 @@
                             </div>
                         {% endif %}
                     </div>
-                    <div class="card-body p-4 bg-light">
+                    <div class="card-body p-4 ">
                         <div class="mb-4 text-center">
                             <strong class="fs-5">Liste des produits</strong>
                         </div>
@@ -26,12 +26,29 @@
                                 <li class="list-group-item d-flex flex-column align-items-start">
                                     <span class="fw-semibold">{{ product.name }}</span>
                                     <span class="text-muted small">{{ product.description }}</span>
+                                    <span class="text-muted small "><strong>{{ product.price }} €</strong></span>
+                                    <span class="text-muted small">Catégorie : {{ product.category }}</span>
                                 </li>
                             {% else %}
                                 <li class="list-group-item text-center text-muted">Aucun produit disponible.</li>
                             {% endfor %}
                         </ul>
+                        
                     </div>
+                    {% if app.user %}
+                        {% if isAdmin %}
+                            <div class="mb-3 text-center">
+                                <button class="btn bg-dark btn-link text-decoration-underline ">
+                                    <a href="{{ path('app_product_create') }}" class="text-decoration-underline text-light">Ajouter un produit</a>
+                                </button>
+                            </div>
+                        {% endif %}
+                        <div class="mb-3 mt-3 text-center">
+                            <button class="btn bg-dark btn-link text-decoration-underline ">
+                                <a href="{{ path('app_logout') }}" class="text-decoration-underline text-light">Déconnexion</a>
+                            </button>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
