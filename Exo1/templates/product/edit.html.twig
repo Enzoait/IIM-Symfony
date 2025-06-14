@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un produit{% endblock %}
+{% block title %}Modifier un produit{% endblock %}
 
 {% block body %}
     <div class="container py-5">
@@ -8,7 +8,7 @@
             <div class="col-md-7 col-lg-6">
                 <div class="card shadow border-0">
                     <div class="card-header bg-dark text-light text-center">
-                        <h1 class="h4 mb-0">Créer un produit</h1>
+                        <h1 class="h4 mb-0">Modifier {{ productName }}</h1>
                     </div>
                     <div class="card-body p-4 text-light" style="background-color: #1c191f;">
                         {{ form_errors(form) }}
@@ -16,25 +16,25 @@
                         {{ form_start(form) }}
                             <div class="mb-3">
                                 {{ form_label(form.name, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
-                                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control' , 'value': productName}}) }}
                                 {{ form_errors(form.name) }}
                             </div>
                             <div class="mb-3">
                                 {{ form_label(form.price, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
-                                {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_widget(form.price, {'attr': {'class': 'form-control' , 'value': productPrice}}) }}
                                 {{ form_errors(form.price) }}
                             </div>
                             <div class="mb-3">
                                 {{ form_label(form.category, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
-                                {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_widget(form.category, {'attr': {'class': 'form-control' , 'value': productCategory}}) }}
                                 {{ form_errors(form.category) }}
                             </div>
                             <div class="mb-3">
                                 {{ form_label(form.description, null, {'label_attr': {'class': 'form-label fw-semibold'}}) }}
-                                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'value': productDescription}}) }}
                                 {{ form_errors(form.description) }}
                             </div>
-                            <button type="submit" class="btn btn-dark w-100 py-2 mt-2 text-light">Créer</button>
+                            <button type="submit" class="btn btn-dark w-100 py-2 mt-2 text-light">Modifier</button>
                         {{ form_end(form) }}
                     </div>
                 </div>

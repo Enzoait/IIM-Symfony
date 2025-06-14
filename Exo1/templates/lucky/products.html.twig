@@ -11,6 +11,9 @@
                         <h1 class="h4 mb-0">
                             Hello {{ connectedUser ? connectedUser : 'Guest' }}
                         </h1>
+                        <h2 class="h6 mb-0">
+                            Nombre de points : {{ userPoints }} Pts.
+                        </h2>
                         {% if isAdmin %}
                             <div class="alert alert-success mt-3 mb-0 py-2" role="alert">
                                 Connected as an Administrator.
@@ -23,12 +26,15 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             {% for product in productList %}
-                                <li class="list-group-item d-flex flex-column align-items-start">
-                                    <span class="fw-semibold">{{ product.name }}</span>
-                                    <span class="text-muted small">{{ product.description }}</span>
-                                    <span class="text-muted small "><strong>{{ product.price }} €</strong></span>
-                                    <span class="text-muted small">Catégorie : {{ product.category }}</span>
-                                </li>
+                                <a href="{{ path('app_display_product', { 'id': product.id }) }}" class="text-decoration-none">
+                                    <li class="list-group-item d-flex flex-column align-items-start">
+                                        <span class="fw-semibold">{{ product.name }}</span>
+                                        <span class="text-muted small">{{ product.description }}</span>
+                                        <span class="text-muted small "><strong>{{ product.price }} Pts.</strong></span>
+                                        <span class="text-muted small">Catégorie : {{ product.category }}</span>
+                                        <span class="text-muted small">Vendu par : {{ product.user }}</span>
+                                    </li>
+                                </a>
                             {% else %}
                                 <li class="list-group-item text-center text-muted">Aucun produit disponible.</li>
                             {% endfor %}
@@ -49,6 +55,15 @@
                             </button>
                         </div>
                     {% endif %}
+
+                    {% if not app.user %}
+                        <div class="mb-3 mt-3 text-center">
+                            <button class="btn bg-dark btn-link text-decoration-underline ">
+                                <a href="{{ path('app_login') }}" class="text-decoration-underline text-light">Connexion</a>
+                            </button>
+                        </div>
+                    {% endif %}
+                    <p>Produits achetés : {{ ownedProducts|join(', ') }}</p>
                 </div>
             </div>
         </div>

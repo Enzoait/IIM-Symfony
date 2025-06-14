@@ -10,23 +10,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Security;
-use Doctrine\Persistence\ManagerRegistry;
 use DateTimeImmutable;
 
-final class ProductController extends AbstractController
+final class EditProductController extends AbstractController
 {
-    #[Route('/product/create', name: 'app_product_create')]
-    public function create(Security $security, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/product/edit/{id}', name: 'app_product_edit')]
+    public function edit(Security $security, Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $user = $security->getUser();
-        $connectedUserId = $user ? $user->getId() : null;
-        $product = new Product();
+        $connectedUserId = $user->getId();
+        $connectedUserId = (int)$connectedUserId ;
+
+        $product = $entityManager->getRepository(Product::class)->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('Product not found');
+        }
+
         $form = $this->createForm(ProductForm::class, $product);
         $form->handleRequest($request);
         $date = new DateTimeImmutable();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product->setCreatedAt($date);
             $product->setUpdatedAt($date);
             $product->setUserId($connectedUserId);
             $entityManager->persist($product);
@@ -35,10 +39,12 @@ final class ProductController extends AbstractController
             return $this->redirectToRoute('app_products');
         }
 
-        return $this->render('product/create.html.twig', [
+        return $this->render('product/edit.html.twig', [
             'form' => $form->createView(),
-            'connectedUserId' => $connectedUserId,
+            'productName' => $product->getName(),
+            'productDescription' => $product->getDescription(),
+            'productPrice' => $product->getPrice(),
+            'productCategory' => $product->getCategory(),
         ]);
     }
-
 }

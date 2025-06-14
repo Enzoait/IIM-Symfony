@@ -15,7 +15,6 @@ class ProductForm extends AbstractType
             ->add('name')
             ->add('price')
             ->add('category')
-            ->add('user_id')
             ->add('description')
         ;
     }

@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit {{ productName }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+                <div class="card shadow border-0 bg-light">
+                    <div class="card-header bg-dark text-light text-center">
+                        <h1 class="h4 mb-0">
+                            {{ productName }}
+                        </h1>
+                        <h2 class="h6 mb-0">
+                            Nombre de points : {{ userPoints }} Pts.
+                        </h2>
+                        {% if isAdmin %}
+                            <div class="alert alert-success mt-3 mb-0 py-2" role="alert">
+                                Connected as an Administrator.
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-4 ">
+                        <div class="mb-4 text-center">
+                            <strong class="fs-5"> Detail du produit </strong>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex flex-column align-items-start">
+                                <span class="fw-semibold">{{ productName }}</span>
+                                <span class="text-muted small">{{ productDescription }}</span>
+                                <span class="text-muted small "><strong>{{ productPrice }} Pts.</strong></span>
+                                <span class="text-muted small">Catégorie : {{ productCategory }}</span>
+                                <span class="text-muted small">Vendu par : {{ userName }}</span>
+                            </li>
+                        </ul>                        
+                    </div>
+                    {% if userPoints > productPrice %}
+                        <form class="mb-3 text-center" method="post" action="{{ path('app_product_buy', {'id': productId}) }}" onsubmit="return confirm('Acheter ce produit ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('buy' ~ productId) }}">
+                            <button class="btn bg-green btn-success">Acheter</button>
+                        </form>
+                    {% else %}
+                        <div class="mb-3 text-center">
+                            <button class="btn bg-red btn-danger disabled">Vous n'avez pas assez de points.</button>
+                        </div>
+                    {% endif %}
+
+                    {% if isAdmin %}
+                        <div class="mb-3 text-center">
+                            <button class="btn bg-dark btn-link text-decoration-underline ">
+                                <a href="{{ path('app_product_create') }}" class="text-decoration-underline text-light">Ajouter un produit</a>
+                            </button>
+                        </div>
+                    {% endif %}
+                    {% if app.user %}
+                        {% if isAdmin or userId == app.user.id %}
+                            <div class="mb-3 text-center">
+                                <button class="btn bg-dark ">
+                                    <a href="{{ path('app_product_edit', { 'id': productId }) }}" class="text-decoration-underline text-light">Modifier le produit</a>
+                                </button>
+                            </div>
+                            <form class="mb-3 text-center" method="post" action="{{ path('app_product_delete', {'id': productId}) }}" onsubmit="return confirm('Supprimer ce produit ?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ productId) }}">
+                                <button class="btn bg-red btn-danger">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if not app.user %}
+                        <div class="mb-3 mt-3 text-center">
+                            <button class="btn bg-dark btn-link text-decoration-underline ">
+                                <a href="{{ path('app_login') }}" class="text-decoration-underline text-light">Connexion</a>
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

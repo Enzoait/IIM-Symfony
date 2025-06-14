@@ -50,6 +50,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $disabled = null;
 
+    #[ORM\Column]
+    private array $ownedProducts = [];
+
     /**
      * @ORM\PrePersist
      */
@@ -212,6 +215,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDisabled(bool $disabled): static
     {
         $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    public function getOwnedProducts(): array
+    {
+        return $this->ownedProducts;
+    }
+
+    public function setOwnedProducts(array $ownedProducts): static
+    {
+        $this->ownedProducts = $ownedProducts;
 
         return $this;
     }
