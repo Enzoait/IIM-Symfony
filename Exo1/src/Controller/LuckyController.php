@@ -19,6 +19,7 @@ class LuckyController extends AbstractController
         $connectedUser = $user ? $user->getName() : null;
         $connectedUserFirstname = $user ? $user->getFirstname() : null;
         $isAdmin = $user && in_array('ROLE_ADMIN', $user->getRoles());
+        $isDisabled = $user ? $user->isDisabled() : false;
         $userPoints = $user ? $user->getPoints() : 0;
 
         $productList = $doctrine->getRepository(Product::class)->findAll();
@@ -34,6 +35,7 @@ class LuckyController extends AbstractController
             'connectedUserFirstname' => $connectedUserFirstname,
             'isAdmin' => $isAdmin,
             'userPoints' => $userPoints,
+            'isDisabled' => $isDisabled,
             'ownedProducts' => $user ? $user->getOwnedProducts() : [],
             'productList' => array_map(function($p) use ($userMap) {
                 return [

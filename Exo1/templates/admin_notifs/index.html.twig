@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boite de notifications{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+                <div class="card shadow border-0 bg-light">
+                    <div class="card-body p-4 ">
+                        <div class="mb-4 text-center">
+                            <strong class="fs-5">Boite de notifications</strong>
+                            <p class="text-muted small">Les notifications concernant les achats et modifications de produits apparaissent ici.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% for notif in notifList|reverse %}
+                            <div class="d-flex justify-content-between align-items-center mb-3 gap-3">
+                                    <li class="list-group-item flex-grow-1 w-100 d-flex flex-column align-items-start" style="flex: 1 1 auto;">
+                                        <span class="fw-semibold">{{ notif.label }}</span>
+                                        {% if notif.type == 'Modification De Produit' %}
+                                            <span class="text-muted small">Modifié par {{ notif.userName }}</span>
+                                        {% endif %}
+                                        {% if notif.type == 'Achat De Produit' %}
+                                            <span class="text-muted small">Acheté par {{ notif.userName }}</span>
+                                        {% endif %}
+                                        <span class="text-muted small">{{ notif.type }}</span>
+                                        <span class="text-muted small">{{ notif.createdAt|date('d/m/Y H:i') }}</span>
+                                    </li>
+                                </div>    
+                            {% else %}
+                                <li class="list-group-item text-center text-muted">Aucune notification !</li>
+                            {% endfor %}
+                        </ul>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

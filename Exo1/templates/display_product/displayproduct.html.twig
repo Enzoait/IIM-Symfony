@@ -34,17 +34,23 @@
                             </li>
                         </ul>                        
                     </div>
-                    {% if userPoints > productPrice %}
-                        <form class="mb-3 text-center" method="post" action="{{ path('app_product_buy', {'id': productId}) }}" onsubmit="return confirm('Acheter ce produit ?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('buy' ~ productId) }}">
-                            <button class="btn bg-green btn-success">Acheter</button>
-                        </form>
-                    {% else %}
-                        <div class="mb-3 text-center">
-                            <button class="btn bg-red btn-danger disabled">Vous n'avez pas assez de points.</button>
+                    {% if isDisabled %}
+                        <div class="alert alert-danger mt-3 mb-0 py-2" role="alert">
+                            Vous êtes désactivé. Impossible d'acheter ce produit.
                         </div>
+                        {% else %}
+                            {% if userPoints > productPrice %}
+                            <form class="mb-3 text-center" method="post" action="{{ path('app_product_buy', {'id': productId}) }}" onsubmit="return confirm('Acheter ce produit ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('buy' ~ productId) }}">
+                                <button class="btn bg-green btn-success">Acheter</button>
+                            </form>
+                        {% else %}
+                            <div class="mb-3 text-center">
+                                <button class="btn bg-red btn-danger disabled">Vous n'avez pas assez de points.</button>
+                            </div>
+                        {% endif %}
                     {% endif %}
-
+                    
                     {% if isAdmin %}
                         <div class="mb-3 text-center">
                             <button class="btn bg-dark btn-link text-decoration-underline ">

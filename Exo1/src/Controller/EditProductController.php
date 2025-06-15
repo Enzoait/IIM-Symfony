@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Notifs;
 use App\Form\ProductForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,10 +31,19 @@ final class EditProductController extends AbstractController
         $form->handleRequest($request);
         $date = new DateTimeImmutable();
 
+        $notif = new Notifs();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $product->setUpdatedAt($date);
             $product->setUserId($connectedUserId);
             $entityManager->persist($product);
+            $entityManager->flush();
+            $notif->setLabel('Produit modifié : ' . $product->getName());
+            $notif->setType('Modification De Produit');
+            $notif->setCreatedAt($date);
+            $notif->setUpdatedAt($date);
+            $notif->setUserId($connectedUserId);
+            $entityManager->persist($notif);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_products');

@@ -32,12 +32,13 @@ class RegistrationController extends AbstractController
 
             // encode the plain password
             $user->setPassword(password: $userPasswordHasher->hashPassword(user: $user, plainPassword: $plainPassword));
+            $user->setPoints(0);
+            $user->setDisabled(false);
+            $user->setOwnedProducts([]);
             $user->setCreatedAt($date);
             $user->setUpdatedAt($date);
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // do anything else you need here, like send an email
 
             $security->login($user, 'form_login', 'main');
             return $this->redirectToRoute('app_products');

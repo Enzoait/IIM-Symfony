@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
+use App\Entity\Notifs;
 
 final class DisplayProductController extends AbstractController
 {
@@ -20,6 +21,7 @@ final class DisplayProductController extends AbstractController
     {
         $connectedUser = $security->getUser();
         $userPoints = $connectedUser ? $connectedUser->getPoints() : 0;
+        $isDisabled = $connectedUser ? $connectedUser->isDisabled() : false;
         $isAdmin = $connectedUser && in_array('ROLE_ADMIN', $connectedUser->getRoles());
         $product = $doctrine->getRepository(Product::class)->find($id);
         $user = $doctrine->getRepository(Users::class)->find($product->getUserId());
@@ -38,6 +40,7 @@ final class DisplayProductController extends AbstractController
             'userId' => $user->getId(),
             'isAdmin' => $isAdmin,
             'userPoints' => $userPoints,
+            'isDisabled' => $isDisabled,
         ]);
     }
 
@@ -63,12 +66,21 @@ final class DisplayProductController extends AbstractController
             throw $this->createAccessDeniedException('Vous devez être connecté pour acheter un produit.');
         }
         $date = new DateTimeImmutable();
+        $notif = new Notifs();
         if ($this->isCsrfTokenValid('buy' . $product->getId(), $request->request->get('_token'))) {
             
             $user->setUpdatedAt($date);
             $user->setPoints($user->getPoints() - $product->getPrice());
             $user->setOwnedProducts(array_merge($user->getOwnedProducts(), [$product->getName()]));
             $entityManager->persist($user);
+            $entityManager->flush();
+
+            $notif->setLabel('Produit acheté : ' . $product->getName());
+            $notif->setType('Achat De Produit');
+            $notif->setCreatedAt($date);
+            $notif->setUpdatedAt($date);
+            $notif->setUserId($user->getId());
+            $entityManager->persist($notif);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_products');
