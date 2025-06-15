@@ -12,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTimeImmutable;
+use Symfony\Component\Messenger\MessageBusInterface;
+use App\Message\MillePoints;
 
 class AdminDashboardController extends AbstractController
 {
@@ -63,5 +65,18 @@ class AdminDashboardController extends AbstractController
         }
 
         throw $this->createAccessDeniedException('Token invalide');
+    }
+
+    #[Route('/admin/add-points', name: 'app_admin_add_points', methods: ['POST'])]
+    public function addPoints(Request $request, MessageBusInterface $bus): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if ($this->isCsrfTokenValid('add_points', $request->request->get('_token'))) {
+            $bus->dispatch(new MillePoints(1000));
+            $this->addFlash('success', 'Ajout de 1000 points à tous les utilisateurs actifs lancé (asynchrone).');
+        }
+
+        return $this->redirectToRoute('app_admin_dashboard');
     }
 }

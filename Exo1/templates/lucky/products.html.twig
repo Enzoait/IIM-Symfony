@@ -12,7 +12,9 @@
                             <h1 class="h4 mb-0 me-2">
                                 Bonjour {{ connectedUser ? connectedUser : 'Invité' }} {{ connectedUserFirstname ? connectedUserFirstname : '' }}
                             </h1>
-                            <a href="{{ path('app_settings') }}" class="text-decoration-underline text-light"><i class="bi bi-gear"></i></a>
+                            {% if connectedUser %}
+                                <a href="{{ path('app_settings') }}" class="text-decoration-underline text-light"><i class="bi bi-gear"></i></a>
+                            {% endif %}
                             {% if isAdmin %}
                                 <a href="{{ path('app_admin_dashboard') }}" class="text-decoration-underline text-light ms-2"><i class="bi bi-person-fill-gear"></i></a>
                                 <a href="{{ path('app_admin_notifs') }}" class="text-decoration-underline text-light ms-2"><i class="bi bi-bell"></i></a>

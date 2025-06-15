@@ -17,9 +17,10 @@
                             <div class="d-flex justify-content-between align-items-center mb-3 gap-3">
                                     <li class="list-group-item flex-grow-1 w-100 d-flex flex-column align-items-start" style="flex: 1 1 auto;">
                                         <span class="fw-semibold">{{ user.name }}</span>
-                                        <span class="text-muted small">{{ user.firstname }}</span>
-                                        <span class="text-muted small">{{ user.email }}</span>
-                                        <span class="text-muted small"><strong>{{ user.points }} Pts.</strong></span>
+                                        <span class="text-muted small">Id : {{ user.id }}</span>
+                                        <span class="text-muted small">Prénom : {{ user.firstname ? user.firstname : 'Non renseigné' }}</span>
+                                        <span class="text-muted small">Email : {{ user.email ? user.email : 'Non renseigné' }}</span>
+                                        <span class="text-muted small"><strong>Points : {{ user.points }} Pts.</strong></span>
                                         <span class="text-muted small">Rôles : {{ user.roles|join(', ') }}</span>
                                         <span class="text-muted small">Actif ? : {{ user.disabled ? 'Non' : 'Oui' }}</span>
                                     </li>
@@ -38,7 +39,12 @@
                                 <li class="list-group-item text-center text-muted">Aucun utilisateur disponible.</li>
                             {% endfor %}
                         </ul>
-                        
+                        {% if userList|length > 0 %}
+                            <form method="post" action="{{ path('app_admin_add_points') }}" onsubmit="return confirm('Ajouter 1000 points à tous les utilisateurs actifs ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('add_points') }}">
+                                <button class="btn btn-primary w-100 mb-3">Ajouter 1000 points à tous les utilisateurs actifs</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
