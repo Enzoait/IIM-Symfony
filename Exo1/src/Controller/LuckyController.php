@@ -17,6 +17,7 @@ class LuckyController extends AbstractController
     {
         $user = $security->getUser();
         $connectedUser = $user ? $user->getName() : null;
+        $connectedUserFirstname = $user ? $user->getFirstname() : null;
         $isAdmin = $user && in_array('ROLE_ADMIN', $user->getRoles());
         $userPoints = $user ? $user->getPoints() : 0;
 
@@ -30,9 +31,10 @@ class LuckyController extends AbstractController
 
         return $this->render('lucky/products.html.twig', [
             'connectedUser' => $connectedUser,
+            'connectedUserFirstname' => $connectedUserFirstname,
             'isAdmin' => $isAdmin,
             'userPoints' => $userPoints,
-            'ownedProducts' => $user->getOwnedProducts(),
+            'ownedProducts' => $user ? $user->getOwnedProducts() : [],
             'productList' => array_map(function($p) use ($userMap) {
                 return [
                     'id' => $p->getId(),

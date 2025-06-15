@@ -8,15 +8,18 @@
             <div class="col-md-8 col-lg-7">
                 <div class="card shadow border-0 bg-light">
                     <div class="card-header bg-dark text-light text-center">
-                        <h1 class="h4 mb-0">
-                            Hello {{ connectedUser ? connectedUser : 'Guest' }}
-                        </h1>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <h1 class="h4 mb-0 me-2">
+                                Bonjour {{ connectedUser ? connectedUser : 'Invité' }} {{ connectedUserFirstname ? connectedUserFirstname : '' }}
+                            </h1>
+                            <a href="{{ path('app_settings') }}" class="text-decoration-underline text-light"><i class="bi bi-gear"></i></a>
+                        </div>
                         <h2 class="h6 mb-0">
                             Nombre de points : {{ userPoints }} Pts.
                         </h2>
                         {% if isAdmin %}
                             <div class="alert alert-success mt-3 mb-0 py-2" role="alert">
-                                Connected as an Administrator.
+                                Connecté en tant qu'Administrateur.
                             </div>
                         {% endif %}
                     </div>
